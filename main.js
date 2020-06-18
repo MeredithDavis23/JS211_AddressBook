@@ -1,13 +1,16 @@
+// 'use strict';
+const assert = require('assert');
+
 let arrayOfUsers = [];
 
 // this function waits for the web page to be loaded, when it does it will run the code inside of it which happen to be getPosts()
-window.onload = function() {
-  // multiplePeeps()
-}
+// window.onload = function() {
+//   // multiplePeeps()
+// }
 
 // this function is going to make a fetch request to the url inside it's parameter brackets (). Then it will turn the response (data it's getting back), saved here as res. The res.json will not be saved as posts and saved into the variable, arrayOfPosts
-const loadUser = () => {
-  fetch('https://randomuser.me/api/')
+const loadUser = (fetch) => {
+  return fetch('https://randomuser.me/api/')
     .then(res => res.json())
     .then(user => user.results.map(person => {
       arrayOfUsers.push(person)
@@ -49,11 +52,15 @@ const loadUser = () => {
 // }
 
 
-const multiplePeeps = () => {
-  fetch('https://randomuser.me/api/?results=7')
+const multiplePeeps = (fetch) => {
+  return fetch('https://randomuser.me/api/?results=7')
     .then(res => res.json())
     .then(user => user.results.map(person => {
+
+      
       arrayOfUsers.push(person);
+      // const sorted = user.sort()
+      // console.log(arrayOfUsers)
       const myUser = document.getElementById('all-users');
       const pic = document.createElement('img');
       pic.setAttribute("src", `${person.picture.thumbnail}`)
@@ -71,7 +78,6 @@ const multiplePeeps = () => {
           return moreInfo.innerHTML = "";
         }
         })
-        
         myUser.appendChild(pic)
         li.appendChild(text)
         myUser.append(li)
@@ -79,15 +85,19 @@ const multiplePeeps = () => {
         li.appendChild(moreInfo)
         // myUser.appendChild(info)
     }));
-    //   text.sort(function(a, b) {
+    // arrayOfUsers.sort()
+    // console.log(arrayOfUsers.user)
+    // arrayOfUsers.sort(function(a, b) {
     //   if(a.person.name.first < b.person.name.first) {return -1;}
     //   if(a.person.name.first > b.person.name.first)  {return 1;}
     //   return 0;
     // })
+      // const sorted = person.name.first.sort();
+      // console.log(sorted)
 };
 
-const countries = () => {
-  fetch('https://randomuser.me/api/?nat=au,us,fr,gb')
+const countries = (fetch) => {
+  return fetch('https://randomuser.me/api/?nat=au,us,fr,gb')
   .then(res => res.json())
   .then(user => user.results.map(person => {
     arrayOfUsers.push(person);
@@ -118,8 +128,8 @@ const countries = () => {
   }));
 }
 
-const phone = () => {
-  fetch('https://randomuser.me/api/?inc=name,picture,cell')
+const phone = (fetch) => {
+  return fetch('https://randomuser.me/api/?inc=name,picture,cell')
   .then(res => res.json())
   .then(user => user.results.map(person => {
     arrayOfUsers.push(person);
@@ -137,7 +147,7 @@ const phone = () => {
 };
 
 
-const exclude = () => {
+const exclude = (fetch) => {
   fetch('https://randomuser.me/api/?exc=dob,registered,nat,location')
   .then(res => res.json())
   .then(user => user.results.map(person => {
@@ -169,3 +179,48 @@ const clearInfo = () => {
 //   li.appendChild(text)
 //   myUser.append(li)
 // }
+
+// if (typeof describe === 'function'){
+
+  describe('#loadUser()', () => {
+    it('should make sure the URL works', () => {
+      const fakeFetch = url => {
+        assert(url == 'https://randomuser.me/api/')
+        return new Promise(function(resolve) {
+
+        })
+      }
+      loadUser(fakeFetch)
+      })
+      it('brings back one user', () => {
+        const fakeFetch = url => {
+          return Promise.resolve({
+            json: () => Promise.resolve({
+              result: [
+                {
+                  first: 'Johnny',
+                  last: 'Johnson'
+                }
+              ]
+            })
+          })
+        }
+        loadUser(fakeFetch)
+        .then(result => assert(result.first === 'Johnny'))
+        })
+      })
+      describe('#phone()', () => {
+        it('should only bring back name, picture, cell', () => {
+          const fakeFetch = url => {
+            assert(url == 'https://randomuser.me/api/?inc=name,picture,cell')
+            return new Promise(function(resolve) {
+    
+            })
+          }
+          phone(fakeFetch)
+          })
+        })
+     
+    
+    
+  
