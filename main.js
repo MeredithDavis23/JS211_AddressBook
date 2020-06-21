@@ -1,5 +1,5 @@
 // 'use strict';
-const assert = require('assert');
+// const assert = require('assert');
 
 let arrayOfUsers = [];
 
@@ -56,18 +56,6 @@ const loadUserTwo = (fetch, id) => {
   return url;
 
 }
-
-
-// const moreInfo = () => {
-//   const liTwo = document.createElement('li')
-//   const info = document.createTextNode(`${person.dob.date}`)
-//   li.appendChild(info)
-//   myUser.append(li)
-// }
-// this function logs the results in your browsers console
-// const getUsers = () => {
-//   console.log(arrayOfUsers)
-// }
 
 
 const multiplePeeps = (fetch) => {
@@ -128,16 +116,7 @@ const countries = (fetch) => {
     const li = document.createElement('li');
     // const button = document.createElement("button")
     const text = document.createTextNode(`${person.name.first} ${person.name.last}  ||   Country:  ${person.location.country}`)
-    // moreInfo.innerHTML = "";
-    // button.innerHTML = "Nationality"
-    // button.addEventListener('click', function() {
-    //   const info = document.createTextNode(`${person.location.country}`)
-    //   if(moreInfo.innerHTML === "") {
-    //     return moreInfo.appendChild(info);
-    //   }else{
-    //     return moreInfo.innerHTML = "";
-    //   }
-    //   })
+
       
       myUser.appendChild(pic)
       li.appendChild(text)
@@ -229,7 +208,6 @@ if (typeof describe === 'function'){
           assert(url == 'https://randomuser.me/api/')
           return new Promise(function(resolve) {
           });
-        
         }
         loadUser(fakeFetch)
       });
