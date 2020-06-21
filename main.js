@@ -10,8 +10,13 @@ let arrayOfUsers = [];
 
 // this function is going to make a fetch request to the url inside it's parameter brackets (). Then it will turn the response (data it's getting back), saved here as res. The res.json will not be saved as posts and saved into the variable, arrayOfPosts
 const loadUser = (fetch) => {
-  return fetch('https://randomuser.me/api/')
+  return fetch('https://randomuser.me/api/') 
     .then(res => res.json())
+    // .then(res => {
+    //   if(!res.ok) {
+    //     throw Error(res.statusText)
+    //   } return res.json()
+    // })
     .then(user => user.results.map(person => {
       arrayOfUsers.push(person)
       const myUser = document.getElementById('all-users');
@@ -37,8 +42,21 @@ const loadUser = (fetch) => {
         li.appendChild(button)
         li.appendChild(moreInfo)
         // myUser.appendChild(info)
-    }));
+    }))
+    // .catch(err => console.log(`Error,  ${err}`))
 };
+const loadUserTwo = (fetch, id) => {
+  fetch('https://randomuser.me/api/')
+    .then(res => res.json())
+  const arr=url.split('/');
+  // let id = Number;
+  if (id<=0 || id > 30 )
+  return 'out of range'
+  else 
+  return url;
+
+}
+
 
 // const moreInfo = () => {
 //   const liTwo = document.createElement('li')
@@ -53,8 +71,13 @@ const loadUser = (fetch) => {
 
 
 const multiplePeeps = (fetch) => {
-  return fetch('https://randomuser.me/api/?results=7')
+  fetch('https://randomuser.me/api/?results=7')
     .then(res => res.json())
+    // .then(res => {
+    //   if(!res.ok) {
+    //     throw Error(res.statusText)
+    //   } return res.json()
+    // })
     .then(user => user.results.map(person => {
 
       
@@ -84,21 +107,18 @@ const multiplePeeps = (fetch) => {
         li.appendChild(button)
         li.appendChild(moreInfo)
         // myUser.appendChild(info)
-    }));
-    // arrayOfUsers.sort()
-    // console.log(arrayOfUsers.user)
-    // arrayOfUsers.sort(function(a, b) {
-    //   if(a.person.name.first < b.person.name.first) {return -1;}
-    //   if(a.person.name.first > b.person.name.first)  {return 1;}
-    //   return 0;
-    // })
-      // const sorted = person.name.first.sort();
-      // console.log(sorted)
+    }))
+    .catch(err => console.log(`Error,  ${err}`))
 };
 
 const countries = (fetch) => {
-  return fetch('https://randomuser.me/api/?nat=au,us,fr,gb')
-  .then(res => res.json())
+  fetch('https://randomuser.me/api/?nat=au,us,fr,gb')
+  // .then(res => res.json())
+  .then(res => {
+    if(!res.ok) {
+      throw Error(res.statusText)
+    } return res.json()
+  })
   .then(user => user.results.map(person => {
     arrayOfUsers.push(person);
     const myUser = document.getElementById('all-users');
@@ -125,12 +145,18 @@ const countries = (fetch) => {
       // li.appendChild(button)
       // li.appendChild(moreInfo)
       // myUser.appendChild(info)
-  }));
+  }))
+  .catch(err => console.log(`Error,  ${err}`))
 }
 
 const phone = (fetch) => {
-  return fetch('https://randomuser.me/api/?inc=name,picture,cell')
-  .then(res => res.json())
+   fetch('https://randomuser.me/api/?inc=name,picture,cell')
+  // .then(res => res.json())
+  .then(res => {
+    if(!res.ok) {
+      throw Error(res.statusText)
+    } return res.json()
+  })
   .then(user => user.results.map(person => {
     arrayOfUsers.push(person);
     const myUser = document.getElementById('all-users');
@@ -144,12 +170,18 @@ const phone = (fetch) => {
     li.appendChild(text)
     myUser.append(li)
   }))
+  .catch(err => console.log(`Error,  ${err}`))
 };
 
 
 const exclude = (fetch) => {
   fetch('https://randomuser.me/api/?exc=dob,registered,nat,location')
-  .then(res => res.json())
+  // .then(res => res.json())
+  .then(res => {
+    if(!res.ok) {
+      throw Error(res.statusText)
+    } return res.json()
+  })
   .then(user => user.results.map(person => {
     arrayOfUsers.push(person);
     const myUser = document.getElementById('all-users');
@@ -163,6 +195,7 @@ const exclude = (fetch) => {
     li.appendChild(text)
     myUser.append(li)
   }))
+  .catch(err => console.log(`Error,  ${err}`))
 };
 
 const clearInfo = () => {
@@ -180,20 +213,30 @@ const clearInfo = () => {
 //   myUser.append(li)
 // }
 
-// if (typeof describe === 'function'){
+if (typeof describe === 'function'){
 
   describe('#loadUser()', () => {
-    it('should make sure the URL works', () => {
-      const fakeFetch = url => {
-        assert(url == 'https://randomuser.me/api/')
-        return new Promise(function(resolve) {
+    // const fakeFetch = (url) => {
+    //   if(url == 'https://randomuser.me/api/') {
+    //     return url
+    //   } else {
+    //     return false
+    //   }
+    // } 
+  
+      it('should make sure the URL works', () => {
+        const fakeFetch = url => {
+          assert(url == 'https://randomuser.me/api/')
+          return new Promise(function(resolve) {
+          });
+        
+        }
+        loadUser(fakeFetch)
+      });
 
-        })
-      }
-      loadUser(fakeFetch)
-      })
       it('brings back one user', () => {
         const fakeFetch = url => {
+          assert(url == 'https://randomuser.me/api/')
           return Promise.resolve({
             json: () => Promise.resolve({
               result: [
@@ -209,6 +252,7 @@ const clearInfo = () => {
         .then(result => assert(result.first === 'Johnny'))
         })
       })
+    
       describe('#phone()', () => {
         it('should only bring back name, picture, cell', () => {
           const fakeFetch = url => {
@@ -219,8 +263,50 @@ const clearInfo = () => {
           }
           phone(fakeFetch)
           })
+      describe('#countries()', () => {
+        it('should only bring back people from AU, US, FR, GB', () => {
+          const fakeFetch = url => {
+            assert(url == 'https://randomuser.me/api/?nat=au,us,fr,gb')
+            return new Promise(function(resolve) {
+    
+            })
+          }
+          countries(fakeFetch)
+          })
         })
-     
+      describe('#multiplePeeps()', () => {
+        it('should bring back more than one user', () => {
+          const fakeFetch = url => {
+            assert(url == 'https://randomuser.me/api/?results=7')
+            return new Promise(function(resolve) {
     
+            })
+          }
+          multiplePeeps(fakeFetch)
+          })
+        })
+      })
+    }
+    // describe('#loadUserTwo()', () => {
+    //   it('gives error if out of range', () => {
+    //     const fakeFetch = (url) =>  
+    //     assert(url == 'https://randomuser.me/api/')
+    //     // return new Promise(function(resolve) {
+    //     // });
+    //   {
+    //     // const arr=url.split('/');
+    //     // let id=Number(arr[arr.length-1]);
+    //     // if (id<=0 || id > 30 )
+    //     // return 'out of range'
+    //     // else 
+    //     // return url;
+    //   }
+    //   assert.equal(loadUserTwo(fakeFetch,31), 'out of range');
+    //   });
+    // })
     
-  
+      // it('shows error for wrong url', () => {
+      //   const fakeFetch = url => {
+      //   assert(url === 'https://randomuser.me/api/user-address')
+      // }
+      // loadUser(fakeFetch)
