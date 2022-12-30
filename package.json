@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/MeredithDavis23/JS211_AddressBook#readme",
   "dependencies": {
-    "mocha": "^8.0.1"
+    "mocha": "^8.4.0"
   },
   "devDependencies": {}
 }
